@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'home_screen.dart';
 import 'upload_screen.dart';
@@ -11,8 +12,10 @@ class BottomNavBar extends StatefulWidget {
   _BottomNavBarState createState() => _BottomNavBarState();
 }
 
+/*
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _currentIndex = 0;
+  int _selectedIndex = 0;
+
   final List<Widget> _children = [
     const HomeScreen(),
     const UploadScreen(),
@@ -22,7 +25,42 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: _children[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: 'home'.tr,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.camera_alt),
+            label: 'upload'.tr,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings),
+            label: 'settings'.tr,
+          ),
+        ],
+      ),
+    );
+  }
+}
+*/
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _selectedIndex = 0;
+  final List<Widget> _children = [
+    const HomeScreen(),
+    const UploadScreen(),
+    const SettingsScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _children[_selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -45,32 +83,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
               duration: const Duration(milliseconds: 400),
               color: Colors.grey[600]!,
               // 非激活按钮的颜色
-              tabs: const [
+              tabs: [
                 GButton(
                   icon: Icons.home,
-                  text: '主页面',
+                  text: 'home'.tr,
                   backgroundColor: Colors.red, // 激活时的背景色
                   textColor: Colors.white, // 激活时的文本色
                 ),
                 GButton(
                   icon: Icons.camera_alt,
-                  text: '上传',
+                  text: 'upload'.tr,
                   backgroundColor: Colors.blue, // 激活时的背景色
                   textColor: Colors.white, // 激活时的文本色
                 ),
                 GButton(
                   icon: Icons.settings,
-                  text: '设置',
+                  text: 'settings'.tr,
                   backgroundColor: Colors.green, // 激活时的背景色
                   textColor: Colors.white, // 激活时的文本色
                 ),
               ],
-              selectedIndex: _currentIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) => setState(() => _selectedIndex = index),
             ),
           ),
         ),

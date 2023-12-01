@@ -1,29 +1,54 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'views/bottom_nav_bar.dart';
+import 'dart:ui' as ui;
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'views/bottom_nav_bar.dart';
+import 'package:get/get.dart';
+
+class Messages extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+        'en_US': {
+          "title": "Item",
+          "home": "Home",
+          "upload": "Upload",
+          "settings": "Settings"
+        },
+        'zh_CN': {
+          "title": "持物",
+          "home": "主页面",
+          "upload": "上传",
+          "settings": "设置"
+        },
+      };
 }
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    GetMaterialApp(
+      title: 'title'.tr,
+      translations: Messages(),
+      locale: ui.window.locale,
+      fallbackLocale: const Locale('en', 'US'),
+      home: const BottomNavBar(),
+    ),
+  );
+}
+
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: '持物',
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale('en'),
-        Locale('jp'),
-        Locale('zh'),
-      ],
-      home: BottomNavBar(),
+    return GetMaterialApp(
+      title: 'title'.tr,
+      translations: MyTranslations(translations),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
+      home: const BottomNavBar(),
     );
   }
 }
+*/
