@@ -37,6 +37,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  bottom_navy_bar: ^6.0.0
+  fluro: ^2.0.5
+  google_nav_bar: ^5.0.6
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -93,3 +100,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
