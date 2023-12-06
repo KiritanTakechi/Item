@@ -1,14 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:item/utils/permission.dart';
+import 'package:item/utils/router.dart';
 import 'package:item/utils/translations.dart';
-import 'views/bottom_nav_bar.dart';
 import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Map<String, Map<String, String>> translationData = await loadJsonFromAssets();
+
+  Get.put(PermissionStatusController());
 
   runApp(MyApp(translationData));
 }
@@ -25,7 +28,8 @@ class MyApp extends StatelessWidget {
       translations: CustomTranslations(translationData),
       locale: PlatformDispatcher.instance.locale,
       fallbackLocale: const Locale('en', 'US'),
-      home: const BottomNavBar(),
+      initialRoute: '/',
+      getPages: AppRoutes.routes,
     );
   }
 }

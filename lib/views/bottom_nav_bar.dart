@@ -9,45 +9,8 @@ class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  State<BottomNavBar> createState() => _BottomNavBarState();
 }
-
-/*
-class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _children = [
-    const HomeScreen(),
-    const UploadScreen(),
-    const SettingsScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _children[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: 'home'.tr,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.camera_alt),
-            label: 'upload'.tr,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
-            label: 'settings'.tr,
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
