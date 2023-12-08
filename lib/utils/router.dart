@@ -16,7 +16,7 @@ class AppRoutes {
     ),
     GetPage(
       name: '/info',
-      page: () => const InfoScreen(),
+      page: () => InfoScreen(),
     ),
   ];
 }

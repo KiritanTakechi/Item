@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../utils/permission.dart';
 
@@ -12,7 +11,7 @@ class PermissionCheckPage extends StatefulWidget {
 }
 
 class _PermissionCheckPageState extends State<PermissionCheckPage> {
-  final PermissionStatusController permissionController = Get.put(PermissionStatusController());
+  final PermissionHandlerController permissionHandlerController = Get.find<PermissionHandlerController>();
 
   @override
   void initState() {
@@ -21,9 +20,9 @@ class _PermissionCheckPageState extends State<PermissionCheckPage> {
   }
 
   Future<void> _checkPermissions() async {
-    final status = await permissionController.getCameraPermissionStatus();
+    final status = await permissionHandlerController.allPermissionsGranted;
 
-    if (status.isGranted) {
+    if (status) {
       // 如果相机权限被授权，导航到 home 页面
       Get.offNamed('/home'); // 假设 home 页面的路由是 '/home'
     } else {

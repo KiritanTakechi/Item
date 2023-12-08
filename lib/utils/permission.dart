@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 
 class PermissionController extends GetxController {
   /// 请求权限
@@ -21,19 +24,55 @@ class SettingsController extends GetxController {
   }
 }
 
+/*
 class PermissionStatusController extends GetxController {
   /// 检查相机权限状态
-  Future<PermissionStatus> getCameraPermissionStatus() async {
+  Future<PermissionStatus>? getCameraPermissionStatus() async {
     return await Permission.camera.status;
   }
 
   /// 检查相册权限状态
-  Future<PermissionStatus> getPhotosPermissionStatus() async {
+  Future<PermissionStatus>? getPhotosPermissionStatus() async {
     return await Permission.photos.status;
   }
 
   /// 检查文件读写权限状态
-  Future<PermissionStatus> getStoragePermissionStatus() async {
+  Future<PermissionStatus>? getStoragePermissionStatus() async {
     return await Permission.storage.status;
+  }
+}
+*/
+
+class PermissionHandlerController extends GetxController {
+  var cameraPermission = Rx<PermissionStatus>(PermissionStatus.denied);
+  var photosPermission = Rx<PermissionStatus>(PermissionStatus.denied);
+  var storagePermission = Rx<PermissionStatus>(PermissionStatus.denied);
+
+  Future<void> requestAllPermissions() async {
+    var statuses = await [
+      Permission.camera,
+      Permission.photos,
+      Permission.storage,
+    ].request();
+
+    /// 更新权限状态
+    cameraPermission.value = statuses[Permission.camera] ?? PermissionStatus.denied;
+    photosPermission.value = statuses[Permission.photos] ?? PermissionStatus.denied;
+    storagePermission.value = statuses[Permission.storage] ?? PermissionStatus.denied;
+  }
+
+  Future<void> checkAllPermissions() async {
+    cameraPermission.value = await Permission.camera.status;
+    photosPermission.value = await Permission.photos.status;
+    storagePermission.value = await Permission.storage.status;
+  }
+
+  Future<bool> get allPermissionsGranted async {
+    var statuses = await Future.wait([
+      Permission.camera.status,
+      Permission.photos.status,
+      Permission.storage.status,
+    ]);
+    return statuses.every((status) => status.isGranted);
   }
 }

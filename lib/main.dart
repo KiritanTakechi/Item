@@ -11,7 +11,8 @@ void main() async {
 
   Map<String, Map<String, String>> translationData = await loadJsonFromAssets();
 
-  Get.put(PermissionStatusController());
+  Get.put(PermissionHandlerController());
+  //Get.put(PermissionStatusController());
 
   runApp(MyApp(translationData));
 }
