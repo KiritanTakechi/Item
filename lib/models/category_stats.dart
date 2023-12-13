@@ -1,24 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
 
-part 'category_stats.g.dart'; // 这是 build_runner 将会生成的文件
+class CategoryStats extends Table {
+  // 分类名称
+  TextColumn get category => text().withLength(min: 1, max: 100)();
 
-@JsonSerializable()
-class CategoryStats {
-  String category;
-  int itemCount;
-  double totalCost;
-  double averageLifespan;
+  // 该分类的物品总数
+  IntColumn get itemCount => integer()();
 
-  CategoryStats({
-    required this.category,
-    required this.itemCount,
-    required this.totalCost,
-    required this.averageLifespan,
-  });
+  // 该分类的物品总花费
+  RealColumn get totalCost => real()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory CategoryStats.fromJson(Map<String, dynamic> json) => _$CategoryStatsFromJson(json);
-
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$CategoryStatsToJson(this);
+  // 该分类物品的平均寿命
+  RealColumn get averageLifespan => real().nullable()();
 }

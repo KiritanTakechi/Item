@@ -1,22 +1,22 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
+import 'item.dart';
 
-part 'end_info.g.dart'; // 这是 build_runner 将会生成的文件
+class EndInfos extends Table {
+  // 唯一标识符
+  IntColumn get id => integer().autoIncrement()();
 
-@JsonSerializable()
-class EndInfo {
-  String reason;
-  String summary;
-  List<String> finalTags;
+  // 弃用理由（坏了、升级、不喜欢等）
+  TextColumn get reason => text().nullable()();
 
-  EndInfo({
-    required this.reason,
-    required this.summary,
-    required this.finalTags,
-  });
+  // 使用总结
+  TextColumn get summary => text().nullable()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory EndInfo.fromJson(Map<String, dynamic> json) => _$EndInfoFromJson(json);
+  // 最终标签（值、不值等）
+  TextColumn get finalTags => text().nullable()();
 
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$EndInfoToJson(this);
+  // 最终物品图片存放路径 (存储序列化的 JSON)
+  TextColumn get imgpath => text().nullable()();
+
+  // 添加外键指向 Item 表
+  IntColumn get itemId => integer().customConstraint('REFERENCES items(id) NOT NULL')();
 }
