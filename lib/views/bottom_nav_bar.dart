@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'ArchiveScreen.dart';
 import 'home_screen.dart';
 import 'upload_screen.dart';
 import 'settings_screen.dart';
@@ -17,6 +18,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _children = [
     const HomeScreen(),
     const UploadScreen(),
+    const ArchiveScreen(),
     const SettingsScreen(),
   ];
 
@@ -57,6 +59,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   icon: Icons.camera_alt,
                   text: 'upload'.tr,
                   backgroundColor: Colors.blue, // 激活时的背景色
+                  textColor: Colors.white, // 激活时的文本色
+                ),
+                GButton(
+                  icon: Icons.archive,
+                  text: 'archive'.tr,
+                  backgroundColor: Colors.orange, // 激活时的背景色
                   textColor: Colors.white, // 激活时的文本色
                 ),
                 GButton(

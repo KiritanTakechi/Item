@@ -6,43 +6,54 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 定义支持的语言列表
     final languages = [
       {'code': 'en', 'country': 'US', 'name': 'English'},
       {'code': 'zh', 'country': 'CN', 'name': '简体中文'},
     ];
 
-    // 获取当前语言和国家代码
     Locale currentLocale = Get.locale!;
     String languageCode = currentLocale.languageCode;
     String countryCode = currentLocale.countryCode ?? '';
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('settings'.tr),
+        title: Text('settings'.tr),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        titleTextStyle: const TextStyle(color: Colors.black, fontSize: 20),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                'select_language'.tr, // 提示文本
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
             DropdownButton<String>(
-              // 设置当前选中的语言
               value: '$languageCode-$countryCode',
-              // 生成下拉菜单项
+              isExpanded: true,
               items: languages.map<DropdownMenuItem<String>>((language) {
                 return DropdownMenuItem<String>(
                   value: '${language['code']}-${language['country']}',
                   child: Text(language['name'] as String),
                 );
               }).toList(),
-              // 当选中不同项时
               onChanged: (String? newValue) {
                 if (newValue != null) {
                   final newLocale = newValue.split('-');
                   Get.updateLocale(Locale(newLocale[0], newLocale[1]));
                 }
               },
+              borderRadius: BorderRadius.circular(15),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
             ),
           ],
         ),
