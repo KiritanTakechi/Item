@@ -3,5 +3,10 @@
   "home": "Home",
   "upload": "Upload",
   "settings": "Settings",
-  "info": "Info"
+  "info": "Info",
+  "permissions_screen": "Permissions Screen",
+  "camera_permission": "Camera Permission",
+  "photos_permission": "Photos Permission",
+  "storage_permission": "Storage Permission",
+  "proceed2home": "Proceed to Home"
 }

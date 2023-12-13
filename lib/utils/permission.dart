@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 class PermissionController extends GetxController {
   /// 请求权限
@@ -56,9 +57,12 @@ class PermissionHandlerController extends GetxController {
     ].request();
 
     /// 更新权限状态
-    cameraPermission.value = statuses[Permission.camera] ?? PermissionStatus.denied;
-    photosPermission.value = statuses[Permission.photos] ?? PermissionStatus.denied;
-    storagePermission.value = statuses[Permission.storage] ?? PermissionStatus.denied;
+    cameraPermission.value =
+        statuses[Permission.camera] ?? PermissionStatus.denied;
+    photosPermission.value =
+        statuses[Permission.photos] ?? PermissionStatus.denied;
+    storagePermission.value =
+        statuses[Permission.storage] ?? PermissionStatus.denied;
   }
 
   Future<void> checkAllPermissions() async {
@@ -74,5 +78,43 @@ class PermissionHandlerController extends GetxController {
       Permission.storage.status,
     ]);
     return statuses.every((status) => status.isGranted);
+  }
+
+  Future<void> requestCameraPermission() async {
+    cameraPermission.value = await Permission.camera.request();
+  }
+
+  // 请求照片权限
+  Future<void> requestPhotosPermission() async {
+    if (Platform.isAndroid) {
+      print("Platform.isAndroid");
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        // 对于 SDK 32 及以下版本，请求存储权限
+        photosPermission.value = await Permission.storage.request();
+      } else {
+        // 对于 SDK 33 及以上版本，请求照片权限
+        photosPermission.value = await Permission.photos.request();
+      }
+    } else {
+      photosPermission.value = await Permission.photos.request();
+    }
+  }
+
+  // 请求存储权限
+  Future<void> requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      print("Platform.isAndroid");
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        // 对于 SDK 32 及以下版本，请求存储权限
+        storagePermission.value = await Permission.storage.request();
+      } else {
+        // 对于 SDK 33 及以上版本，请求照片权限
+        storagePermission.value = await Permission.photos.request();
+      }
+    } else {
+      storagePermission.value = await Permission.storage.request();
+    }
   }
 }

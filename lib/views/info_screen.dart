@@ -4,36 +4,100 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../utils/permission.dart';
 
-class InfoScreen extends StatelessWidget {
-  InfoScreen({super.key});
+class InfoScreen extends StatefulWidget {
+  const InfoScreen({super.key});
 
-  // 使用 Get.find() 获取 PermissionHandlerController
-  final PermissionHandlerController permissionHandlerController = Get.find<PermissionHandlerController>();
+  @override
+  State<InfoScreen> createState() => _InfoScreenState();
+}
+
+class _InfoScreenState extends State<InfoScreen> {
+  PermissionHandlerController permissionHandlerController =
+      Get.find<PermissionHandlerController>();
+
+  @override
+  void initState() {
+    super.initState();
+    permissionHandlerController.checkAllPermissions();
+  }
+
+  Widget permissionStatus(String permissionType, Rx<PermissionStatus> status,
+      VoidCallback onRequest) {
+    return ListTile(
+      title: Text(permissionType),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min, // 保证 Row 的大小仅包裹其内容
+        children: <Widget>[
+          Obx(() => status.value.isGranted
+              ? const Icon(Icons.check_circle, color: Colors.green)
+              : const Icon(Icons.cancel, color: Colors.red)),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: onRequest,
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Permissions Screen"),
+        title: Text("permissions_screen".tr,
+            style: const TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 使用 Obx() 来监听和响应权限状态的变化
-            Obx(() => Text("Camera Permission: ${permissionHandlerController.cameraPermission.value.isGranted ? "Granted" : "Denied"}")),
-            Obx(() => Text("Photos Permission: ${permissionHandlerController.photosPermission.value.isGranted ? "Granted" : "Denied"}")),
-            Obx(() => Text("Storage Permission: ${permissionHandlerController.storagePermission.value.isGranted ? "Granted" : "Denied"}")),
+            permissionStatus(
+              "camera_permission".tr,
+              permissionHandlerController.cameraPermission,
+              () => permissionHandlerController.requestCameraPermission(),
+            ),
+            const Divider(),
+            permissionStatus(
+              "photos_permission".tr,
+              permissionHandlerController.photosPermission,
+              () => permissionHandlerController.requestPhotosPermission(),
+            ),
+            const Divider(),
+            permissionStatus(
+              "storage_permission".tr,
+              permissionHandlerController.storagePermission,
+              () => permissionHandlerController.requestStoragePermission(),
+            ),
             const SizedBox(height: 20),
-            // 按钮的可用性也是根据权限状态的变化而变化
             Obx(() {
-              bool allPermissionsGranted = permissionHandlerController.cameraPermission.value.isGranted &&
-                  permissionHandlerController.photosPermission.value.isGranted &&
+              bool allPermissionsGranted = permissionHandlerController
+                      .cameraPermission.value.isGranted &&
+                  permissionHandlerController
+                      .photosPermission.value.isGranted &&
                   permissionHandlerController.storagePermission.value.isGranted;
 
               return ElevatedButton(
-                onPressed: allPermissionsGranted ? () => Get.toNamed('/home') : null,
-                child: Text("Proceed to Home"),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      allPermissionsGranted ? Colors.blue : Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed:
+                    allPermissionsGranted ? () => Get.toNamed('/home') : null,
+                child: Text(
+                  "proceed2home".tr,
+                  style: TextStyle(
+                    color: allPermissionsGranted
+                        ? Colors.white
+                        : null, // 当按钮启用时，设置文本颜色为白色
+                  ),
+                ),
               );
             }),
           ],
