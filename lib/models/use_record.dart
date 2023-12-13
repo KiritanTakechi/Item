@@ -1,22 +1,22 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
+import 'item.dart';
 
-part 'use_record.g.dart'; // 这是 build_runner 将会生成的文件
+class UseRecords extends Table {
+  // 唯一标识符
+  IntColumn get id => integer().autoIncrement()();
 
-@JsonSerializable()
-class UseRecord {
-  DateTime date;
-  String thoughts;
-  String prosCons;
+  // 记录日期
+  DateTimeColumn get date => dateTime()();
 
-  UseRecord({
-    required this.date,
-    required this.thoughts,
-    required this.prosCons,
-  });
+  // 使用感想
+  TextColumn get thoughts => text().nullable()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory UseRecord.fromJson(Map<String, dynamic> json) => _$UseRecordFromJson(json);
+  // 物品的优缺点
+  TextColumn get prosCons => text().nullable()();
 
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$UseRecordToJson(this);
+  // 记录图片的存放路径 (存储序列化的 JSON)
+  TextColumn get imgpath => text().nullable()();
+
+  // 添加外键指向 Item 表
+  IntColumn get itemId => integer().customConstraint('REFERENCES items(id) NOT NULL')();
 }

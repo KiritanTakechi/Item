@@ -1,41 +1,40 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'maintenance_record.dart'; // 确保这个文件也使用了 json_serializable
-import 'use_record.dart'; // 确保这个文件也使用了 json_serializable
-import 'end_info.dart'; // 确保这个文件也使用了 json_serializable
+import 'package:drift/drift.dart';
 
-part 'item.g.dart'; // 这是 build_runner 将会生成的文件
+class Items extends Table {
+  // 唯一标识符
+  IntColumn get id => integer().autoIncrement()();
 
-@JsonSerializable(explicitToJson: true) // 明确指定对嵌套对象调用 toJson
-class Item {
-  String id;
-  String name;
-  DateTime startDate;
-  String category;
-  String description;
-  String purchaseReason;
-  String purchaseLocation;
-  double purchaseCost;
-  List<MaintenanceRecord> maintenanceRecords;
-  List<UseRecord> useRecords;
-  EndInfo endInfo;
+  // 物品名称
+  TextColumn get name => text().withLength(min: 1, max: 100)();
 
-  Item({
-    required this.id,
-    required this.name,
-    required this.startDate,
-    required this.category,
-    required this.description,
-    required this.purchaseReason,
-    required this.purchaseLocation,
-    required this.purchaseCost,
-    required this.maintenanceRecords,
-    required this.useRecords,
-    required this.endInfo,
-  });
+  // 开始使用时间
+  DateTimeColumn get startDate => dateTime()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+  // 分类标签
+  TextColumn get category => text()();
 
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
+  // 物品描述
+  TextColumn get description => text().nullable()();
+
+  // 物品图片存放路径(存储序列化的 JSON)
+  TextColumn get imgpath => text().nullable()();
+
+  // 购买理由
+  TextColumn get purchaseReason => text().nullable()();
+
+  // 购买地点
+  TextColumn get purchaseLocation => text().nullable()();
+
+  // 购买花费
+  RealColumn get purchaseCost => real().nullable()();
+
+  // 维护记录列表ID（关联到 MaintenanceRecord 表）
+  //IntColumn get maintenanceRecordsId => integer().customConstraint('REFERENCES MaintenanceRecords(id)').nullable()();
+
+  // 使用感想记录列表ID（关联到 UseRecord 表）
+  //IntColumn get useRecordsId => integer().customConstraint('REFERENCES UseRecords(id)').nullable()();
+
+  // 终结信息ID（关联到 EndInfo 表）
+  // get endInfoId => integer().customConstraint('REFERENCES EndInfos(id)').nullable()();
 }
+

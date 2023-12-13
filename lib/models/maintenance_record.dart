@@ -1,24 +1,25 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
+import 'item.dart';
 
-part 'maintenance_record.g.dart'; // 这是 build_runner 将会生成的文件
+class MaintenanceRecords extends Table {
+  // 唯一标识符
+  IntColumn get id => integer().autoIncrement()();
 
-@JsonSerializable()
-class MaintenanceRecord {
-  DateTime date;
-  String location;
-  double cost;
-  String result;
+  // 维护日期
+  DateTimeColumn get date => dateTime()();
 
-  MaintenanceRecord({
-    required this.date,
-    required this.location,
-    required this.cost,
-    required this.result,
-  });
+  // 维护地点
+  TextColumn get location => text().nullable()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory MaintenanceRecord.fromJson(Map<String, dynamic> json) => _$MaintenanceRecordFromJson(json);
+  // 维护花费
+  RealColumn get cost => real().nullable()();
 
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$MaintenanceRecordToJson(this);
+  // 维护结果
+  TextColumn get result => text().nullable()();
+
+  // 维护情况图片的存放路径 (存储序列化的 JSON)
+  TextColumn get imgpath => text().nullable()();
+
+  // 添加外键指向 Item 表
+  IntColumn get itemId => integer().customConstraint('REFERENCES items(id) NOT NULL')();
 }

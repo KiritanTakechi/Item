@@ -1,24 +1,18 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
 
-part 'overall_stats.g.dart'; // 这是 build_runner 将会生成的文件
+class OverallStats extends Table {
+  // 唯一标识符
+  IntColumn get id => integer().autoIncrement()();
 
-@JsonSerializable()
-class OverallStats {
-  int totalItems;
-  double totalCost;
-  double averageLifespan;
-  Map<String, int> evaluationStats;
+  // 总物品数
+  IntColumn get totalItems => integer()();
 
-  OverallStats({
-    required this.totalItems,
-    required this.totalCost,
-    required this.averageLifespan,
-    required this.evaluationStats,
-  });
+  // 总花费
+  RealColumn get totalCost => real()();
 
-  // 从 JSON 反序列化工厂构造函数
-  factory OverallStats.fromJson(Map<String, dynamic> json) => _$OverallStatsFromJson(json);
+  // 所有物品的平均寿命
+  RealColumn get averageLifespan => real().nullable()();
 
-  // 序列化为 JSON 方法
-  Map<String, dynamic> toJson() => _$OverallStatsToJson(this);
+  // 最终评价统计（存储序列化的 JSON，包含各评价标签的数量）
+  TextColumn get evaluationStats => text().nullable()();
 }
