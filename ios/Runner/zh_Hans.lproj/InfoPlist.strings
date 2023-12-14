@@ -1,0 +1,2 @@
+NSCameraUsageDescription = "请求访问相机";
+NSPhotoLibraryUsageDescription = "请求访问相册";
